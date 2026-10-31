@@ -8,8 +8,7 @@ owners and gameplay changes are not interchangeable with this project's.
 
 Keep the old source, old game library, new game library, and resulting artifacts
 separate. Record SHA-256, GNU build ID, architecture, file size and actual game
-version. A file named `dot60values.so` is not enough to identify a binary.
-Never redistribute Minecraft libraries in the repository or release package.
+version. A lib file is not enough to identify a binary.
 
 The 1.5.3 target is Android AArch64, build ID
 `eb291b883dfdfaff70c4999c2eabd61885ae3e15`, SHA-256
