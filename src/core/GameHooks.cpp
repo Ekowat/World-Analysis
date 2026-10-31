@@ -17,7 +17,7 @@ using namespace worldanalysis::events;
 using worldanalysis::memory::SignatureId;
 
 using NormalTickFn = void(*)(void*);
-using ClientInstanceUpdateFn = void*(*)(void*, bool);
+using ClientInstanceUpdateFn = void*(*)(void*, bool, bool);
 // onOpen()/destructors are single-this, void-return methods in the supplied
 // 26.45 image.  An earlier generic eight-register prototype was unnecessary
 // and made these global UI hooks harder to audit.
@@ -57,9 +57,9 @@ void tickDetour(void* actor) {
     bus().publish(postEvent);
 }
 
-void* clientUpdateDetour(void* clientInstance, bool value) {
+void* clientUpdateDetour(void* clientInstance, bool primary, bool secondary) {
     if (clientInstance) currentClientInstance.store(clientInstance, std::memory_order_release);
-    void* result = clientUpdateOriginal ? clientUpdateOriginal(clientInstance, value) : nullptr;
+    void* result = clientUpdateOriginal ? clientUpdateOriginal(clientInstance, primary, secondary) : nullptr;
     ClientInstanceUpdateEvent event{reinterpret_cast<worldanalysis::sdk::ClientInstance*>(clientInstance)};
     bus().publish(event);
     return result;

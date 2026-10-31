@@ -1,0 +1,36 @@
+{
+  "mod": "World Analysis",
+  "version": "1.5.3",
+  "minecraft": "audited dot60 / 1.26.60 ARM64",
+  "ndk": "r28c",
+  "api": 28,
+  "stl": "c++_static",
+  "preloader_commit": "5d108da350ce3e7f13f51415f81e65344ecd5d14",
+  "library_sha256": "0099346737379e11530ded2d581a437b9ef04b9e837e06e84b3b83a9a7cabd8e",
+  "library_bytes": 660632,
+  "load_alignments": [
+    16384,
+    16384,
+    16384
+  ],
+  "needed": [
+    "libpreloader.so",
+    "libandroid.so",
+    "liblog.so",
+    "libEGL.so",
+    "libGLESv3.so",
+    "libGLESv2.so",
+    "libm.so",
+    "libdl.so",
+    "libc.so"
+  ],
+  "preloader_imports_checked": 9,
+  "static_checks": {
+    "patterns": 110,
+    "layout_instruction_fingerprints": 23,
+    "python_tests": 6,
+    "package_byte_equality": true
+  },
+  "android_gameplay_tested": false,
+  "xmake_tested": false
+}
