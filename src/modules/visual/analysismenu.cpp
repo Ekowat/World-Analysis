@@ -54,7 +54,7 @@ struct Telemetry {
 };
 
 using LevelGetHitResultFn=worldanalysis::sdk::HitResult*(*)(void*);
-using ActorGetHealthFn=int(*)(void*);
+using ActorGetHealthFn=float(*)(void*);
 using ActorGetMaxHealthFn=int(*)(void*);
 using AttributesGetByNameFn=void*(*)(void*,const std::string*);
 using ActorGetEquipmentItemFn=void*(*)(void*,int);

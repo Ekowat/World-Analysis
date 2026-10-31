@@ -30,7 +30,7 @@ def build_manifest(values: dict[str, str]) -> dict[str, object]:
         "version": values["Version"],
         "entry": "libWorldAnalysis.so",
         "icon": "resources/icon.png",
-        "minecraft_versions": ["1.26.60*"],
+        "minecraft": ["1.26.52"],
         "overwrite_files": ["resources/minecraft.ttf", "resources/icon.png"],
         "overwrite_folders": [],
     }

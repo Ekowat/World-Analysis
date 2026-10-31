@@ -11,12 +11,12 @@ inline constexpr std::size_t mSkin = 2552;
 
 namespace Actor {
 inline constexpr std::size_t mEntityContext = 0x8;
-inline constexpr std::size_t mStateVectorComponent = 0x228;
-inline constexpr std::size_t mActorRotationComponent = 0x238;
-inline constexpr std::size_t mLevel = 0x1F0;
-inline constexpr std::size_t mDimension = 0x1E0;
+inline constexpr std::size_t mStateVectorComponent = 0x208;
+inline constexpr std::size_t mActorRotationComponent = 0x218;
+inline constexpr std::size_t mLevel = 464;
+inline constexpr std::size_t mDimension = 448;
 inline constexpr std::size_t mHurtTime = 0x194;
-inline constexpr std::size_t mCategories = 0x220;
+inline constexpr std::size_t mCategories = 512;
 inline constexpr std::size_t mNameTagHash = 384;
 inline constexpr std::size_t mFilteredNameTag = 712;
 }
@@ -30,8 +30,8 @@ inline constexpr std::size_t mAABB = 0;
 }
 
 namespace Level {
-inline constexpr std::size_t mActorManager = 0x478;
-inline constexpr std::size_t mHitResult = 0x1D8;
+inline constexpr std::size_t mActorManager = 0x470;
+inline constexpr std::size_t mHitResult = 0x1D0;
 }
 
 namespace HitResult {

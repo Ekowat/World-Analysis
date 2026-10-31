@@ -25,23 +25,21 @@ I hope this open source can prove useful in helping others create Levilauncher M
 
 - Android
 - `arm64-v8a`
-- LeviLauncher Android **v1.6.0** (the release adding 26.60 support)
-- The audited Minecraft Bedrock Android ARM64 **1.26.60** binary; see [VERIFICATION.md](VERIFICATION.md) for its build ID
+- LeviLauncher
+- Minecraft Bedrock **1.26.52** for the current build
 
 ## Build
 
 Requirements:
 
 - Android NDK r28c
-- CMake 3.22+, Ninja, Git
+- xmake
+- CMake
 - Python 3
 
 ```sh
-cmake -S . -B build -G Ninja \
-  -DCMAKE_TOOLCHAIN_FILE=/path/to/android-ndk-r28c/build/cmake/android.toolchain.cmake \
-  -DANDROID_ABI=arm64-v8a -DANDROID_PLATFORM=android-28 \
-  -DANDROID_STL=c++_static -DCMAKE_BUILD_TYPE=Release
-cmake --build build --target WorldAnalysis --parallel 2
+xmake f -y -p android -a arm64-v8a -m release --ndk=/path/to/android-ndk-r28c
+xmake -y
 ```
 
 The build produces:
@@ -49,15 +47,11 @@ The build produces:
 - `libWorldAnalysis.so`
 - `WorldAnalysis.levipack`
 
-See [BUILD_LEVILAUNCHER.md](BUILD_LEVILAUNCHER.md) for the build and local audit commands.
+The project also includes CMake configuration for Android builds.
 
 ## Compatibility
 
-World Analysis **1.5.3** targets the supplied **dot60 / 1.26.60 ARM64** build. It checks Minecraft's GNU build ID before resolving signatures or installing game hooks. A different hotfix requires another audit even if LeviLauncher accepts the version label.
-
-The ARM64 build, 110 signature matches, layout fingerprints, and six Python checks pass. Android gameplay has not been tested for this port. See [VERIFICATION.md](VERIFICATION.md) for the exact scope and remaining device checks.
-
-For future Minecraft updates, follow [UPDATE_METHOD.md](UPDATE_METHOD.md). The source includes old/new binding evidence, disassembly excerpts, and a Python verifier. Minecraft binaries are not included.
+Minecraft signatures and offsets are version-specific. The current source targets Minecraft Bedrock **1.26.52**. See `VERIFICATION.md` for the validation scope used for this release.
 
 ## Credits
 

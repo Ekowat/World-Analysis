@@ -12,14 +12,13 @@ inline constexpr std::size_t mFogColorBlue = 0x42C;
 inline constexpr std::size_t mBaseFogStart = 0x434;
 inline constexpr std::size_t mBaseFogEnd = 0x438;
 inline constexpr std::size_t mCurrentFogDensityMax = 0x464;
-// Nametag's world-space subtraction uses +0x614; +0x620 is a separate vector.
-inline constexpr std::size_t mCamPos = 0x614;
-inline constexpr std::size_t mSelectionOverlayMaterial = 0x1028;
+inline constexpr std::size_t mCamPos = 0x61C;
+inline constexpr std::size_t mSelectionOverlayMaterial = 0x1030;
 }
 
 namespace ScreenContext {
 inline constexpr std::size_t mColorHolder = 0x30;
-inline constexpr std::size_t mTessellator = 0xB0;
+inline constexpr std::size_t mTessellator = 0xB8;
 }
 
 namespace MaterialGroup {
@@ -100,7 +99,7 @@ inline constexpr std::uint8_t DontRotate = 5;
 
 namespace LevelRenderer {
 inline constexpr std::size_t mRenderChunkCoordinators = 0x28;
-inline constexpr std::size_t mLevelRendererPlayer = 0x430;
+inline constexpr std::size_t mLevelRendererPlayer = 0x420;
 }
 
 namespace HashTable {
