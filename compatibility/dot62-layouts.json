@@ -1,0 +1,381 @@
+{
+ "build_id": "c60fa32908019eecae39ebfe7bac5755dc35cde2",
+ "changed_constants": [],
+ "changed_constants_note": "No live constant changed from the dot60 profile. All 21 dot60 constants and the 23 instruction proofs were re-verified against the dot62 binary; field offsets, vtable slots (ClientInstance 30/31/82/203/233, UI context 2/6/7/8/9/11/17/33, Level 133, BlockSource 19, Item 37, ChestBlockActor 45) and the two-bool ClientInstance update, owning-string drawText and x8-aggregate ActorManagerList ABIs are identical to dot60.",
+ "instruction_proofs": [
+  {
+   "meaning": "ClientInstance local-player accessor uses the player conversion helper; primary slot 31",
+   "dot60_rva": "0x9b7f610",
+   "rva": "0x9b7f6d0",
+   "bytes": "FF 43 01 D1 FD 7B 03 A9 F3 23 00 F9 FD C3 00 91 53 D0 3B D5 E8 03 00 AA E0 23 00 91 69 16 40 F9 01 01 09 91 A9 83 1F F8 2D C2 32 95 E0 23 00 91 2C C2 32 95 A0 00 00 36 E0 23 00 91 21 00 80 52 F8 A2 4F 94 02 00 00 14 E0 03 1F AA 68 16 40 F9",
+   "instructions": [
+    "0x9b7f6d0: sub sp, sp, #0x50",
+    "0x9b7f6d4: stp x29, x30, [sp, #0x30]",
+    "0x9b7f6d8: str x19, [sp, #0x40]",
+    "0x9b7f6dc: add x29, sp, #0x30",
+    "0x9b7f6e0: mrs x19, tpidr_el0",
+    "0x9b7f6e4: mov x8, x0",
+    "0x9b7f6e8: add x0, sp, #8",
+    "0x9b7f6ec: ldr x9, [x19, #0x28]",
+    "0x9b7f6f0: add x1, x8, #0x240",
+    "0x9b7f6f4: stur x9, [x29, #-8]",
+    "0x9b7f6f8: bl #0xe82ffac",
+    "0x9b7f6fc: add x0, sp, #8",
+    "0x9b7f700: bl #0xe82ffb0",
+    "0x9b7f704: tbz w0, #0, #0x9b7f718",
+    "0x9b7f708: add x0, sp, #8",
+    "0x9b7f70c: mov w1, #1",
+    "0x9b7f710: bl #0xaf682f0",
+    "0x9b7f714: b #0x9b7f71c",
+    "0x9b7f718: mov x0, xzr",
+    "0x9b7f71c: ldr x8, [x19, #0x28]"
+   ]
+  },
+  {
+   "meaning": "ClientInstance region accessor; primary slot 30",
+   "dot60_rva": "0x9b7f57c",
+   "rva": "0x9b7f63c",
+   "bytes": "FF 43 01 D1 FD 7B 03 A9 F3 23 00 F9 FD C3 00 91 53 D0 3B D5 E8 03 00 AA E0 23 00 91 69 16 40 F9 01 01 09 91 A9 83 1F F8 52 C2 32 95 E0 23 00 91 51 C2 32 95 A0 01 00 36 E0 23 00 91 21 00 80 52 F2 D2 88 95 20 01 00 B4 68 16 40 F9 A9 83 5F F8 1F 01 09 EB C1 01 00 54 FD 7B 43 A9 F3 23 40 F9 FF 43 01 91 FB 0D 88 15 68 16 40 F9 A9 83 5F F8 1F 01 09 EB C1 00 00 54 E0 03 1F AA FD 7B 43 A9",
+   "instructions": [
+    "0x9b7f63c: sub sp, sp, #0x50",
+    "0x9b7f640: stp x29, x30, [sp, #0x30]",
+    "0x9b7f644: str x19, [sp, #0x40]",
+    "0x9b7f648: add x29, sp, #0x30",
+    "0x9b7f64c: mrs x19, tpidr_el0",
+    "0x9b7f650: mov x8, x0",
+    "0x9b7f654: add x0, sp, #8",
+    "0x9b7f658: ldr x9, [x19, #0x28]",
+    "0x9b7f65c: add x1, x8, #0x240",
+    "0x9b7f660: stur x9, [x29, #-8]",
+    "0x9b7f664: bl #0xe82ffac",
+    "0x9b7f668: add x0, sp, #8",
+    "0x9b7f66c: bl #0xe82ffb0",
+    "0x9b7f670: tbz w0, #0, #0x9b7f6a4",
+    "0x9b7f674: add x0, sp, #8",
+    "0x9b7f678: mov w1, #1",
+    "0x9b7f67c: bl #0xfdb4244",
+    "0x9b7f680: cbz x0, #0x9b7f6a4",
+    "0x9b7f684: ldr x8, [x19, #0x28]",
+    "0x9b7f688: ldur x9, [x29, #-8]",
+    "0x9b7f68c: cmp x8, x9",
+    "0x9b7f690: b.ne #0x9b7f6c8",
+    "0x9b7f694: ldp x29, x30, [sp, #0x30]",
+    "0x9b7f698: ldr x19, [sp, #0x40]",
+    "0x9b7f69c: add sp, sp, #0x50",
+    "0x9b7f6a0: b #0xfd82e8c",
+    "0x9b7f6a4: ldr x8, [x19, #0x28]",
+    "0x9b7f6a8: ldur x9, [x29, #-8]",
+    "0x9b7f6ac: cmp x8, x9",
+    "0x9b7f6b0: b.ne #0x9b7f6c8",
+    "0x9b7f6b4: mov x0, xzr",
+    "0x9b7f6b8: ldp x29, x30, [sp, #0x30]"
+   ]
+  },
+  {
+   "meaning": "ClientInstance camera address; primary slot 203",
+   "dot60_rva": "0x9b8d660",
+   "rva": "0x9b8d720",
+   "bytes": "00 00 0D 91 C0 03 5F D6",
+   "instructions": [
+    "0x9b8d720: add x0, x0, #0x340",
+    "0x9b8d724: ret"
+   ]
+  },
+  {
+   "meaning": "ClientInstance GuiData pointer at 0x5e0; primary slot 233",
+   "dot60_rva": "0x9b8edbc",
+   "rva": "0x9b8ee7c",
+   "bytes": "00 F0 42 F9 C0 03 5F D6",
+   "instructions": [
+    "0x9b8ee7c: ldr x0, [x0, #0x5e0]",
+    "0x9b8ee80: ret"
+   ]
+  },
+  {
+   "meaning": "ClientInstance level renderer at 0x1b8",
+   "dot60_rva": "0x9b8657c",
+   "rva": "0x9b8663c",
+   "bytes": "00 DC 40 F9 C0 00 00 B4",
+   "instructions": [
+    "0x9b8663c: ldr x0, [x0, #0x1b8]",
+    "0x9b86640: cbz x0, #0x9b86658"
+   ]
+  },
+  {
+   "meaning": "Actor state-vector at 0x228; setPos writes position",
+   "dot60_rva": "0xfd8d9f0",
+   "rva": "0xfd8e0dc",
+   "bytes": "FD 7B BE A9 F4 4F 01 A9 FD 03 00 91 F3 03 01 AA F4 03 00 AA 21 36 F9 90 21 E4 20 91 E0 03 13 AA D9 CA F5 97 88 16 41 F9 69 02 40 F9 6A 0A 40 B9 09 01 00 F9 0A 09 00 B9 F4 4F 41 A9 FD 7B C2 A8 C0 03 5F D6",
+   "instructions": [
+    "0xfd8e0dc: stp x29, x30, [sp, #-0x20]!",
+    "0xfd8e0e0: stp x20, x19, [sp, #0x10]",
+    "0xfd8e0e4: mov x29, sp",
+    "0xfd8e0e8: mov x19, x1",
+    "0xfd8e0ec: mov x20, x0",
+    "0xfd8e0f0: adrp x1, #0x2452000",
+    "0xfd8e0f4: add x1, x1, #0x839",
+    "0xfd8e0f8: mov x0, x19",
+    "0xfd8e0fc: bl #0xfb00c60",
+    "0xfd8e100: ldr x8, [x20, #0x228]",
+    "0xfd8e104: ldr x9, [x19]",
+    "0xfd8e108: ldr w10, [x19, #8]",
+    "0xfd8e10c: str x9, [x8]",
+    "0xfd8e110: str w10, [x8, #8]",
+    "0xfd8e114: ldp x20, x19, [sp, #0x10]",
+    "0xfd8e118: ldp x29, x30, [sp], #0x20",
+    "0xfd8e11c: ret"
+   ]
+  },
+  {
+   "meaning": "Actor velocity at state-vector+0x18, not previous-position",
+   "dot60_rva": "0xfd8d9d8",
+   "rva": "0xfd8e0c4",
+   "bytes": "08 14 41 F9 29 08 40 B9 2A 00 40 F9 09 21 00 B9 0A 0D 00 F9 C0 03 5F D6",
+   "instructions": [
+    "0xfd8e0c4: ldr x8, [x0, #0x228]",
+    "0xfd8e0c8: ldr w9, [x1, #8]",
+    "0xfd8e0cc: ldr x10, [x1]",
+    "0xfd8e0d0: str w9, [x8, #0x20]",
+    "0xfd8e0d4: str x10, [x8, #0x18]",
+    "0xfd8e0d8: ret"
+   ]
+  },
+  {
+   "meaning": "Actor Dimension pointer at 0x1e0",
+   "dot60_rva": "0xfd827b8",
+   "rva": "0xfd82ea4",
+   "bytes": "73 F2 40 F9",
+   "instructions": [
+    "0xfd82ea4: ldr x19, [x19, #0x1e0]"
+   ]
+  },
+  {
+   "meaning": "Actor Level pointer at 0x1f0 and target identity at 0x290",
+   "dot60_rva": "0xfd8be0c",
+   "rva": "0xfd8c4f8",
+   "bytes": "E8 03 00 AA 00 F8 40 F9 00 01 00 B4 01 49 41 F9 3F 04 00 B1 A0 00 00 54 08 00 40 F9 E2 03 1F 2A 03 FD 40 F9 60 00 1F D6",
+   "instructions": [
+    "0xfd8c4f8: mov x8, x0",
+    "0xfd8c4fc: ldr x0, [x0, #0x1f0]",
+    "0xfd8c500: cbz x0, #0xfd8c520",
+    "0xfd8c504: ldr x1, [x8, #0x290]",
+    "0xfd8c508: cmn x1, #1",
+    "0xfd8c50c: b.eq #0xfd8c520",
+    "0xfd8c510: ldr x8, [x0]",
+    "0xfd8c514: mov w2, wzr",
+    "0xfd8c518: ldr x3, [x8, #0x1f8]",
+    "0xfd8c51c: br x3"
+   ]
+  },
+  {
+   "meaning": "Actor categories at 0x220 (matching native category tests)",
+   "dot60_rva": "0xfd92e98",
+   "rva": "0xfd93584",
+   "bytes": "68 22 42 B9 E8 05 00 36 C8 82 48 39",
+   "instructions": [
+    "0xfd93584: ldr w8, [x19, #0x220]",
+    "0xfd93588: tbz w8, #0, #0xfd93644",
+    "0xfd9358c: ldrb w8, [x22, #0x220]"
+   ]
+  },
+  {
+   "meaning": "Level HitResult pointer at 0x1d8",
+   "dot60_rva": "0x10b16b44",
+   "rva": "0x10b17230",
+   "bytes": "00 EC 40 F9 C0 03 5F D6",
+   "instructions": [
+    "0x10b17230: ldr x0, [x0, #0x1d8]",
+    "0x10b17234: ret"
+   ]
+  },
+  {
+   "meaning": "Level ActorManager pointer at 0x478 and native lookup tail call",
+   "dot60_rva": "0x10b12134",
+   "rva": "0x10b12820",
+   "bytes": "00 3C 42 F9 F1 88 E2 17",
+   "instructions": [
+    "0x10b12820: ldr x0, [x0, #0x478]",
+    "0x10b12824: b #0x103b4be8"
+   ]
+  },
+  {
+   "meaning": "LevelRenderer player renderer at 0x430",
+   "dot60_rva": "0xb79c7b0",
+   "rva": "0xb79ca78",
+   "bytes": "60 1A 42 F9 08 00 40 F9 08 11 40 F9",
+   "instructions": [
+    "0xb79ca78: ldr x0, [x19, #0x430]",
+    "0xb79ca7c: ldr x8, [x0]",
+    "0xb79ca80: ldr x8, [x8, #0x20]"
+   ]
+  },
+  {
+   "meaning": "Nametag camera origin at 0x614/0x618/0x61c; ScreenContext tessellator at 0xb0",
+   "dot60_rva": "0xb7c4134",
+   "rva": "0xb7c43fc",
+   "bytes": "A8 16 46 BD A9 1A 46 BD AA 1E 46 BD 1B 58 40 F9",
+   "instructions": [
+    "0xb7c43fc: ldr s8, [x21, #0x614]",
+    "0xb7c4400: ldr s9, [x21, #0x618]",
+    "0xb7c4404: ldr s10, [x21, #0x61c]",
+    "0xb7c4408: ldr x27, [x0, #0xb0]"
+   ]
+  },
+  {
+   "meaning": "UI draw routine reads ScreenContext tessellator at 0xb0",
+   "dot60_rva": "0xb727790",
+   "rva": "0xb727a80",
+   "bytes": "08 08 40 F9 00 59 40 F9 E8 03 00 91",
+   "instructions": [
+    "0xb727a80: ldr x8, [x0, #0x10]",
+    "0xb727a84: ldr x0, [x8, #0xb0]",
+    "0xb727a88: mov x8, sp"
+   ]
+  },
+  {
+   "meaning": "Dimension weather pointer at 0x1b8 calls WeatherTick; 0x1c0 is a different subsystem",
+   "dot60_rva": "0x10b3c5f0",
+   "rva": "0x10b3ccdc",
+   "bytes": "60 DE 40 F9 7F 8E FD 97 60 E2 40 F9 18 B5 FE 97",
+   "instructions": [
+    "0x10b3ccdc: ldr x0, [x19, #0x1b8]",
+    "0x10b3cce0: bl #0x10aa06dc",
+    "0x10b3cce4: ldr x0, [x19, #0x1c0]",
+    "0x10b3cce8: bl #0x10aea148"
+   ]
+  },
+  {
+   "meaning": "Weather rain/lightning state remains at 0x34/0x38/0x40/0x44",
+   "dot60_rva": "0x10aa000c",
+   "rva": "0x10aa06f8",
+   "bytes": "68 32 40 B9 62 86 48 2D 60 3A 40 BD 08 05 00 11 68 32 00 B9 48 E1 9A 52 30 20 22 1E 68 84 A7 72 60 36 00 BD 03 01 27 1E",
+   "instructions": [
+    "0x10aa06f8: ldr w8, [x19, #0x30]",
+    "0x10aa06fc: ldp s2, s1, [x19, #0x44]",
+    "0x10aa0700: ldr s0, [x19, #0x38]",
+    "0x10aa0704: add w8, w8, #1",
+    "0x10aa0708: str w8, [x19, #0x30]",
+    "0x10aa070c: mov w8, #0xd70a",
+    "0x10aa0710: fcmpe s1, s2",
+    "0x10aa0714: movk w8, #0x3c23, lsl #16",
+    "0x10aa0718: str s0, [x19, #0x34]",
+    "0x10aa071c: fmov s3, w8"
+   ]
+  },
+  {
+   "meaning": "UI primary slot 6 queues and consumes an owning std::string",
+   "dot60_rva": "0xb723f44",
+   "rva": "0xb72420c",
+   "bytes": "FF 83 01 D1 FD 7B 04 A9 F4 4F 05 A9 FD 03 01 91 54 D0 3B D5 F3 03 00 AA 88 16 40 F9 A8 83 1F F8 08 A4 48 A9 A0 43 1E BC E5 23 00 B9 1F 01 09 EB C2 03 00 54 69 A8 40 A9 00 81 01 91 6C 10 40 F8 6B 00 40 39 7F FC 00 A9 7F 00 00 F9 CD 10 40 79 01 01 00 F9 C2 00 40 FD AC 83 1E F8 41 00 C0 3D A9 F3 1E F8 E9 00 40 B9 AC 83 5E F8 0B 61 00 39 AB F3 5E F8 01 81 80 3C 0C 91 01 F8 0B 29 02 A9 81 00 40 FD 1F 31 00 B9 09 49 00 B9 01 1D 00 FD 81 08 40 BD 02 C1 04 FC 05 55 00 B9",
+   "instructions": [
+    "0xb72420c: sub sp, sp, #0x60",
+    "0xb724210: stp x29, x30, [sp, #0x40]",
+    "0xb724214: stp x20, x19, [sp, #0x50]",
+    "0xb724218: add x29, sp, #0x40",
+    "0xb72421c: mrs x20, tpidr_el0",
+    "0xb724220: mov x19, x0",
+    "0xb724224: ldr x8, [x20, #0x28]",
+    "0xb724228: stur x8, [x29, #-8]",
+    "0xb72422c: ldp x8, x9, [x0, #0x88]",
+    "0xb724230: stur s0, [x29, #-0x1c]",
+    "0xb724234: str w5, [sp, #0x20]",
+    "0xb724238: cmp x8, x9",
+    "0xb72423c: b.hs #0xb7242b4",
+    "0xb724240: ldp x9, x10, [x3, #8]",
+    "0xb724244: add x0, x8, #0x60",
+    "0xb724248: ldur x12, [x3, #1]",
+    "0xb72424c: ldrb w11, [x3]",
+    "0xb724250: stp xzr, xzr, [x3, #8]",
+    "0xb724254: str xzr, [x3]",
+    "0xb724258: ldrh w13, [x6, #8]",
+    "0xb72425c: str x1, [x8]",
+    "0xb724260: ldr d2, [x6]",
+    "0xb724264: stur x12, [x29, #-0x18]",
+    "0xb724268: ldr q1, [x2]",
+    "0xb72426c: stur x9, [x29, #-0x11]",
+    "0xb724270: ldr w9, [x7]",
+    "0xb724274: ldur x12, [x29, #-0x18]",
+    "0xb724278: strb w11, [x8, #0x18]",
+    "0xb72427c: ldur x11, [x29, #-0x11]",
+    "0xb724280: stur q1, [x8, #8]",
+    "0xb724284: stur x12, [x8, #0x19]",
+    "0xb724288: stp x11, x10, [x8, #0x20]",
+    "0xb72428c: ldr d1, [x4]",
+    "0xb724290: str wzr, [x8, #0x30]",
+    "0xb724294: str w9, [x8, #0x48]",
+    "0xb724298: str d1, [x8, #0x38]",
+    "0xb72429c: ldr s1, [x4, #8]",
+    "0xb7242a0: stur d2, [x8, #0x4c]",
+    "0xb7242a4: str w5, [x8, #0x54]"
+   ]
+  },
+  {
+   "meaning": "ItemStack override at 0x20; shared item counter at 0x8; Item definition ID at 0x128",
+   "dot60_rva": "0x1076def4",
+   "rva": "0x1076e5e0",
+   "bytes": "09 0C 42 78 E8 FF 8F 52 0A 80 5F F8 3F 01 08 6B 44 19 40 FA 48 A1 04 91 08 00 88 9A 00 01 40 79 C0 03 5F D6 08 08 40 F9",
+   "instructions": [
+    "0x1076e5e0: ldrh w9, [x0, #0x20]!",
+    "0x1076e5e4: mov w8, #0x7fff",
+    "0x1076e5e8: ldur x10, [x0, #-8]",
+    "0x1076e5ec: cmp w9, w8",
+    "0x1076e5f0: ccmp x10, #0, #4, ne",
+    "0x1076e5f4: add x8, x10, #0x128",
+    "0x1076e5f8: csel x8, x0, x8, eq",
+    "0x1076e5fc: ldrh w0, [x8]",
+    "0x1076e600: ret",
+    "0x1076e604: ldr x8, [x0, #0x10]"
+   ]
+  },
+  {
+   "meaning": "Item max-damage accessor remains primary slot 37, field 0x110",
+   "dot60_rva": "0x1079eaec",
+   "rva": "0x1079f1d8",
+   "bytes": "00 20 42 79 C0 03 5F D6",
+   "instructions": [
+    "0x1079f1d8: ldrh w0, [x0, #0x110]",
+    "0x1079f1dc: ret"
+   ]
+  },
+  {
+   "meaning": "ChestBlockActor container accessor remains slot 45; native subobject moves to 0x100",
+   "dot60_rva": "0x10f818a0",
+   "rva": "0x10f81fac",
+   "bytes": "00 00 04 91 C0 03 5F D6",
+   "instructions": [
+    "0x10f81fac: add x0, x0, #0x100",
+    "0x10f81fb0: ret"
+   ]
+  },
+  {
+   "meaning": "DataDrivenModel bone storage stride remains 0xe0",
+   "dot60_rva": "0xa32a244",
+   "rva": "0xa32a674",
+   "bytes": "13 24 40 A9 28 01 13 CB 1F 81 03 B1 A0 50 00 54 53 00 00 B5",
+   "instructions": [
+    "0xa32a674: ldp x19, x9, [x0]",
+    "0xa32a678: sub x8, x9, x19",
+    "0xa32a67c: cmn x8, #0xe0",
+    "0xa32a680: b.eq #0xa32b094",
+    "0xa32a684: cbnz x19, #0xa32a68c"
+   ]
+  },
+  {
+   "meaning": "Actor rotation-component at 0x238; native Actor vtable slot 3",
+   "dot60_rva": "0xfd82bac",
+   "rva": "0xfd83298",
+   "bytes": "68 1E 41 F9",
+   "instructions": [
+    "0xfd83298: ldr x8, [x19, #0x238]"
+   ]
+  }
+ ],
+ "retained_layout_scope": "Retained from dot60 without an independent dot62 proof, matching the dot60 audit scope: LevelRendererPlayer fog float group (0x424/0x428/0x42c/0x434/0x438/0x464; the 0x41c-0x430 float region is intact in dot62), the fallback-only mSelectionOverlayMaterial 0x1028, GuiData viewport pairs (runtime-validated), Player name/skin, Actor hurt time/name-tag fields, HitResult fields, Dimension::mBlockSource, Biome::mHash, NBT and Shulker preview offsets.",
+ "notes": [
+  "dot60 -> dot62 is a hotfix-level delta: 82/110 patterns are byte-identical and the 28 recovered functions match their dot60 normalized bodies at similarity 1.000.",
+  "ClientInstanceUpdate consumes w1 and w2 (two booleans) in dot62; keep the (this, bool, bool) detour.",
+  "UI primary slot 6 still hollows the incoming std::string (owning); the slot 7 overload remains adjacent in code.",
+  "ActorGetHealth/ActorGetMaxHealth and the attribute lookup are byte-identical to dot60; health/max health return integers in w0.",
+  "Camera origin stays 0x614 (Nametag subtraction); 0x620 remains a separate vector."
+ ]
+}

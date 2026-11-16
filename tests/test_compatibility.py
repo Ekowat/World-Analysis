@@ -4,7 +4,7 @@ import unittest
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]/'scripts'))
-from verify_dot60 import build_ids, matches
+from verify_dot62 import build_ids, matches
 from package_levipack import build_manifest
 
 
@@ -45,8 +45,8 @@ class CompatibilityTests(unittest.TestCase):
         self.assertEqual(matches('AA ? BB', [(0x1000, b'\xaa\x00'), (0x2000, b'\xbb')]), [])
 
     def test_launcher_version_contract(self):
-        manifest = build_manifest(dict(Name='World Analysis', Author='Ekowat', Description='test', Version='1.5.3'))
-        self.assertEqual(manifest['minecraft_versions'], ['1.26.60*'])
+        manifest = build_manifest(dict(Name='World Analysis', Author='Ekowat', Description='test', Version='1.5.4'))
+        self.assertEqual(manifest['minecraft_versions'], ['1.26.62*'])
         self.assertNotIn('minecraft', manifest)
 
 

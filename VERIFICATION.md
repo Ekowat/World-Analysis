@@ -1,70 +1,104 @@
-# Minecraft 1.26.52 compatibility update — World Analysis 1.5.2
+# World Analysis 1.5.4 — dot62 / Minecraft 1.26.62
 
-## Target and scope
+## Exact target
 
-Target: supplied ARM64 `dot52values.so`, containing the version string
-`1.26.52.03_RC2`.
+- Android ARM64 `dot62values.so` supplied for this update (`BR_DEBUG 1.26.62.01_RC0`).
+- GNU build ID: `c60fa32908019eecae39ebfe7bac5755dc35cde2`.
+- SHA-256: `4de40e1dcbbca6d4773af57fa6753afd991b95878bc5d51dcceaebf0d65283d8`.
+- The old dot52 and dot60 profiles are retained for comparison, not enabled at runtime.
 
-SHA-256: `5f5baf8e9ded92432e4c2cc9ff58a9313245323e8ca53ce37c169cc720e757c4`.
+This is a cross-compiled and statically audited port. Minecraft gameplay and
+the LeviLauncher menu were not run on a physical Android device for this port.
+Do not describe it as device-tested or universally compatible.
 
-This is a compiled, statically checked compatibility build. Minecraft and the
-Levi menu were not run on an Android device during this update. Device testing
-is still required; byte-pattern uniqueness alone does not prove the semantics
-of a function or every object-layout field.
+## Checks completed
 
-## Signature changes
+- Android NDK r28c, API 28, `arm64-v8a`, Release, C++20 CMake build passes.
+- All 110 source patterns match exactly once at their recorded executable RVAs.
+- 23 recorded layout/ABI instruction fingerprints match the target ELF.
+- Six Python tests pass: ELF note alignment, truncation, oversized lengths,
+  program-header bounds, pattern boundaries/overlaps, and launcher manifest key.
+- The native build-ID note parser has compile-time checks for the correct ID,
+  wrong ID, empty/truncated input, and invalid note lengths.
+- The library exports `PLGetModRegistration`, targets AArch64, and has 16 KiB
+  ELF load alignment. It uses private static libc++ and imports Preloader plus
+  Android platform libraries; it does not require a mod-bundled libc++ shared library.
+- The levipack manifest, library, original font and icon are checked during packaging.
 
-- 64 original signatures still matched uniquely and were retained.
-- 46 signatures were replaced with exact bytes from the supplied dot52 ELF.
-- The resulting 110/110 patterns each match exactly once at the recorded RVA.
-- `compatibility/dot52-bindings.json` records every pattern, RVA, and target hash.
-- `scripts/verify_dot52.py` reproduces the byte-matching audit without external Python dependencies.
+Repeat locally with:
 
-Changed function identities were recovered using pattern comparisons and, for
-ambiguous cases, AArch64 disassembly, native call targets, and RTTI/vtable context.
-In particular, navigation ticks use the relevant PathNavigation-family virtual
-slot 3, the local-player getter uses ClientInstance slot 32, GameMode attack is
-reached from SurvivalMode attack, and the item-damage accessor reads the Damage
-NBT value. Exact new patterns deliberately target this binary; they are not a
-promise of compatibility with another hotfix.
+```sh
+python3 -m unittest discover -s tests -v
+python3 scripts/verify_dot62.py /path/to/dot62values.so
+```
 
-## Corrected layout bindings
+## Changes and evidence
 
-| Binding | Previous | dot52 | Evidence |
-|---|---:|---:|---|
-| ClientInstance getGuiData virtual slot | 235 | 236 | Primary vtable at 0x12BC3300; accessor 0x9818A8C loads this+0x5C0. |
-| BlockSource getDimensionId virtual slot | 18 | 19 | Slot 19 at 0xFB8F214 forwards to Dimension virtual slot 3; slot 18 is a region query. |
-| ClientInstance level-renderer pointer | 0x190 | 0x1A0 | Accessor 0x9816524 and its neighboring renderer caller use this+0x1A0. |
+dot60 to dot62 is a hotfix-level delta. 82 of the 110 dot60 patterns are
+byte-identical in dot62 and were kept as-is. The 28 remaining functions were
+recovered by fuzzy word matching with a position prior derived from the 82
+anchors (RVAs moved by a smooth +0xc0..+0x6ec), then verified by comparing each
+candidate's normalized disassembly with the recorded dot60 excerpt: all 28
+match at similarity 1.000, differing only in branch targets and address/field
+immediates. Every one of the 28 new patterns is unique in the dot62 executable
+sections; no pattern required a wildcard extension.
 
-Other field constants were retained. Selected render, actor, item and world
-accessors were inspected; every retained SDK field was not independently
-verified. Their full correctness must not be inferred from the signature count.
+- `compatibility/dot62-bindings.json`: dot60/dot62 RVAs, method, pattern, match count.
+- `compatibility/dot62-evidence.json`: dot60/dot62 instruction excerpts.
+- `compatibility/dot62-layouts.json`: zero changed constants and 23 re-verified instruction proofs.
+- `compatibility/module-source-hashes.json`: uploaded/current hashes for all 29 module files.
 
-## Levi menu integration
+No live SDK constant changed from dot60. The 21 dot60 constants and all 23
+instruction proofs were re-verified at their dot62 locations: Actor
+state-vector/rotation/level/dimension/categories/target fields, Level
+ActorManager/HitResult, ClientInstance level renderer and camera/GuiData/
+region/local-player accessors, LevelRendererPlayer player renderer and camera
+origin `0x614`, ScreenContext tessellator `0xB0`, Dimension weather `0x1B8`,
+weather fields, ItemStack/Item/ChestBlockActor/DataDrivenModel layouts.
+Vtable slots were re-verified through the binary's relative relocations and
+surviving RTTI: ClientInstance getRegion 30 / getLocalPlayer 31 /
+getMinecraftGame 82 / getCamera 203 / getGuiData 233, MinecraftUIRenderContext
+getLineLength 2 / drawText 6 (owning string) with the slot 7 overload /
+flushText 8 / drawImage 9 / flushImages 11 / fillRectangle 17 / getTexture 33,
+Level getTime 133, BlockSource getDimensionId 19, Item max-damage 37 (field
+`0x110`), ChestBlockActor container 45 (subobject `+0x100`).
 
-The existing registry contains all 11 modules, all configured to show in the
-menu. Registration now happens in the loader enable lifecycle before game-hook
-readiness, and each entry explicitly uses the loader-provided mod owner ID.
-A missing game hook therefore no longer suppresses the entire module list.
+ABI checks re-verified in the dot62 binary: ClientInstance update consumes both
+`w1` and `w2` (two booleans); the UI slot 6 draw hollows the incoming
+`std::string` (owning), so overlay draws keep copying and the detour keeps
+moving the forwarded text; ActorManagerList still returns its aggregate through
+`x8`; Actor health/max-health still return integers in `w0`.
 
-Game-dependent module initialization still waits for the native game hooks.
-Enabled modules receive their enable callback after initialization, preserving
-startup behavior for saved settings and early menu toggles.
+Retained from dot60 without an independent dot62 proof, matching the previous
+audit scope: the LevelRendererPlayer fog float group, the fallback-only
+`mSelectionOverlayMaterial 0x1028`, GuiData viewport pairs (runtime-validated
+with plausibility checks), Player name/skin, Actor hurt-time/name-tag fields,
+HitResult fields, `Dimension::mBlockSource`, `Biome::mHash`, NBT and Shulker
+preview offsets. Every retained SDK field was not independently proved, and
+signature uniqueness does not establish ABI or object lifetime correctness.
 
-The build uses Preloader headers at commit
-`e0a61cbcc46b7fc84f977958f2bbeac47b6fe856`. Imported native API symbols were
-checked against the Preloader library shipped in LeviLauncher Android v1.5.24.
-This is an API/symbol check, not a visual test of the Android menu.
+All 11 modules and their menu registration remain. The Determine and Analysis
+Menu corrections from the dot60 port (no hardness-discovery through the
+misidentified Warden method; health read as an integer) carry over unchanged.
 
-## Preserved module implementations and packaging
+## Android checks still required
 
-All 29 files under `src/modules/` are byte-for-byte identical to the uploaded ZIP.
-`compatibility/module-source-hashes.json` records their original/current hashes.
-The original font is retained. The icon is a transparent 512px white wireframe
-globe, with its editable SVG in `resources/icon.svg`.
+Use LeviLauncher Android and the exact audited game binary. Test each module
+separately, then together, in a disposable world:
 
-The ARM64 release was built with Android NDK r28c, API 28, C++20, shared libc++,
-and 16 KiB ELF segment alignment. The library exports `PLGetModRegistration`.
-The launcher supplies Preloader and libc++; neither is duplicated in the package.
-The archive contains only the manifest, mod library, font, and icon.
-The supplied Minecraft binary is not redistributed.
+1. Enable the mod, confirm all 11 menu entries and saved settings, then enter,
+   leave, and reopen a world. Check Android logs for missing hooks/crashes.
+2. Determine/Analysis Menu: blocks, mobs, health, bones, text and camera movement;
+   compare first/third person and touch/GUI scales.
+3. Instore Viewer: empty/full chests, double chests, item icons/names/counts,
+   rapid opening/closing, and remote versus local inventories.
+4. World Scan/Mob Counter/Pathfinding: spawning, despawning, navigation, chunks,
+   and Overworld/Nether/End transitions. Check stability and frame time.
+5. System Notifications/Update Viewer/Tech VFX/Analyze/Ocean Depth: weather/time,
+   damage/recovery, updates, animations, console input, water and world changes.
+6. Launch a different game build and verify the unsupported-build log appears
+   and game hooks stay disabled. Test other mods only after isolated checks pass.
+
+The xmake alternative and GitHub-hosted CI were not executed here. The included
+workflow runs the tested CMake build and the Python tests without a game binary.
+Future hotfixes need a fresh audit; the version-label wildcard is not approval.

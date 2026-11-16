@@ -266,67 +266,6 @@ bool plausiblePtr(std::uintptr_t p,std::size_t alignment=alignof(void*)){
     return true;
 }
 
-std::uintptr_t branchTarget(const std::uint32_t*instruction){
-    const std::uint32_t value=*instruction;
-    std::int64_t immediate=static_cast<std::int64_t>(value&0x03FFFFFFu);
-    if(immediate&0x02000000LL)immediate|=~0x03FFFFFFLL;
-    return static_cast<std::uintptr_t>(static_cast<std::intptr_t>(
-        reinterpret_cast<std::uintptr_t>(instruction))+immediate*4);
-}
-bool sameImage(std::uintptr_t a,std::uintptr_t b){
-    Dl_info left{},right{};return dladdr(reinterpret_cast<void*>(a),&left)!=0
-        &&dladdr(reinterpret_cast<void*>(b),&right)!=0&&left.dli_fbase==right.dli_fbase;
-}
-std::ptrdiff_t directFloatField(const std::uint32_t*code,unsigned baseRegister,std::size_t limit=12){
-    for(std::size_t i=0;i<limit;++i){
-        const std::uint32_t insn=code[i];
-        if((insn&0xFFC00000u)==0xBD400000u&&((insn>>5)&31u)==baseRegister&&(insn&31u)==0u)
-            return static_cast<std::ptrdiff_t>(((insn>>10)&0xFFFu)*4u);
-        if(insn==0xD65F03C0u)break;
-    }
-    return -1;
-}
-std::ptrdiff_t blockDestroyFieldInFunction(std::uintptr_t address){
-    if(!plausiblePtr(address,4))return -1;
-    const auto*code=reinterpret_cast<const std::uint32_t*>(address);
-    for(std::size_t i=0;i<40;++i){
-        const std::uint32_t load=code[i];
-        // ldr Xd,[X0,#0x68] -- Block::mBlockType in the supplied 26.45 image.
-        if((load&0xFFC003E0u)!=0xF9400000u||(((load>>10)&0xFFFu)*8u)!=0x68u)continue;
-        const unsigned typeRegister=load&31u;
-        if(const auto direct=directFloatField(code+i+1,typeRegister,10);direct>=0)return direct;
-        // Tiny wrappers commonly tail-call BlockLegacy/BlockType's raw float
-        // accessor after loading mBlockType. Decode that accessor too.
-        for(std::size_t j=i+1;j<std::min<std::size_t>(i+10,40);++j){
-            if((code[j]&0xFC000000u)!=0x14000000u)continue;
-            const auto target=branchTarget(code+j);if(!sameImage(address,target))continue;
-            if(const auto field=directFloatField(reinterpret_cast<const std::uint32_t*>(target),0,12);field>=0)return field;
-        }
-    }
-    return -1;
-}
-std::ptrdiff_t findDestroySpeedOffset(std::uintptr_t root){
-    if(!root)return -1;
-    std::vector<std::pair<std::uintptr_t,int>>pending{{root,0}};
-    std::unordered_set<std::uintptr_t>seen;
-    while(!pending.empty()&&seen.size()<384){
-        const auto[address,depth]=pending.back();pending.pop_back();
-        if(!seen.insert(address).second||!sameImage(root,address))continue;
-        if(const auto field=blockDestroyFieldInFunction(address);field>=0&&field<0x300)return field;
-        if(depth>=2)continue;
-        const auto*code=reinterpret_cast<const std::uint32_t*>(address);
-        const std::size_t limit=depth==0?512:128;
-        for(std::size_t i=0;i<limit;++i){
-            const auto insn=code[i];
-            if((insn&0xFC000000u)==0x94000000u){
-                const auto target=branchTarget(code+i);if(sameImage(root,target))pending.emplace_back(target,depth+1);
-            }
-            if(i>8&&insn==0xD65F03C0u)break;
-        }
-    }
-    return -1;
-}
-
 float knownToughness(std::string_view identifier){
     if(identifier.starts_with("minecraft:"))identifier.remove_prefix(10);
     if(identifier=="bedrock"||identifier=="barrier"||identifier=="end_portal_frame"||identifier=="command_block"||identifier=="repeating_command_block"||identifier=="chain_command_block"||identifier=="structure_block"||identifier=="jigsaw")return -1.f;
@@ -993,12 +932,8 @@ void DetermineModule::onInit(){
     if(auto a=worldanalysis::memory::resolve(worldanalysis::memory::SignatureId::ActorGetHealth))g_getHealth=reinterpret_cast<ActorHealthFn>(a);
     if(auto a=worldanalysis::memory::resolve(worldanalysis::memory::SignatureId::ActorGetMaxHealth))g_getMaxHealth=reinterpret_cast<ActorHealthFn>(a);
     if(auto a=worldanalysis::memory::resolve(worldanalysis::memory::SignatureId::ActorGetNameTag))g_getNameTag=reinterpret_cast<ActorGetNameTagFn>(a);
-    if(auto a=worldanalysis::memory::resolve(worldanalysis::memory::SignatureId::GetDestroyProgress)){
-        // Recover the raw BlockType destroy-speed field through the exact
-        // Player::getDestroyProgress call graph instead of hard-coding an
-        // offset from a different point release.
-        g_destroySpeedOffset=findDestroySpeedOffset(a);
-    }
+    // The inherited GetDestroyProgress binding is a Warden method. Use the
+    // existing block calibration/known-value fallback, never its call graph.
     if(auto a=worldanalysis::memory::resolve(worldanalysis::memory::SignatureId::BlockSourceGetBlock))g_getBlock=reinterpret_cast<GetBlockFn>(a);
     if(auto a=worldanalysis::memory::resolve(worldanalysis::memory::SignatureId::BlockSourceIsSolidBlockingBlock))g_isSolid=reinterpret_cast<SolidFn>(a);
     if(auto a=worldanalysis::memory::resolve(worldanalysis::memory::SignatureId::TessellatorBegin))g_begin=reinterpret_cast<TessBeginFn>(a);
