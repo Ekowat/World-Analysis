@@ -10,11 +10,12 @@ Keep the old source, old game library, new game library, and resulting artifacts
 separate. Record SHA-256, GNU build ID, architecture, file size and actual game
 version. A lib file is not enough to identify a binary.
 
-The 1.5.3 target is Android AArch64, build ID
-`eb291b883dfdfaff70c4999c2eabd61885ae3e15`, SHA-256
-`6c7b409d832e182537c0b1dbb8cc3c92f60b7795db7ea5e9f626fb6d6cb8c77f`.
-The baseline dot52 build ID is `56de9eed077631e03a31f4f58eb2f0e00071d335`.
-Both binding profiles and the historical dot52 report are in `compatibility/`.
+The 1.5.4 target is Android AArch64 (`BR_DEBUG 1.26.62.01_RC0`), build ID
+`c60fa32908019eecae39ebfe7bac5755dc35cde2`, SHA-256
+`4de40e1dcbbca6d4773af57fa6753afd991b95878bc5d51dcceaebf0d65283d8`.
+The baseline dot60 build ID is `eb291b883dfdfaff70c4999c2eabd61885ae3e15`;
+the historical dot52 build ID is `56de9eed077631e03a31f4f58eb2f0e00071d335`.
+All three binding profiles and the historical reports are in `compatibility/`.
 
 ## 2. Inventory all native assumptions
 
@@ -135,7 +136,7 @@ The pinned SDK commit is `5d108da350ce3e7f13f51415f81e65344ecd5d14`.
 
 ```sh
 python3 -m unittest discover -s tests -v
-python3 scripts/verify_dot60.py /path/to/dot60values.so
+python3 scripts/verify_dot62.py /path/to/dot62values.so
 ```
 
 For the next version, adapt the verifier to that version's new profile/hash;

@@ -12,6 +12,7 @@
 #include <cstddef>
 #include <mutex>
 #include <string>
+#include <utility>
 #include <vector>
 
 namespace worldanalysis::ui {
@@ -39,7 +40,8 @@ struct HashedString {
     }
 };
 
-using DrawTextFn = void (*)(void*, Font&, const RectangleArea&, const std::string&, const mce::Color&, TextAlignment, float, const TextMeasureData&, const CaretMeasureData&);
+// Native slot 6 consumes an owning string; overlay calls must pass a copy.
+using DrawTextFn = void (*)(void*, Font&, const RectangleArea&, std::string, const mce::Color&, TextAlignment, float, const TextMeasureData&, const CaretMeasureData&);
 // ScreenView::setUpAndRender(ScreenView*, MinecraftUIRenderContext*) uses only
 // x0/x1 in the supplied 26.45 image.  Keeping the exact prototype avoids
 // forwarding unrelated register contents into a large UI routine.
@@ -110,13 +112,13 @@ void ensureFlushHook(void* context) {
         reinterpret_cast<void**>(&g_flushImagesOriginal)) != nullptr;
 }
 
-void drawTextHook(void* self, Font& font, const RectangleArea& rectangle, const std::string& text,
+void drawTextHook(void* self, Font& font, const RectangleArea& rectangle, std::string text,
                   const mce::Color& c, TextAlignment alignment, float alpha,
                   const TextMeasureData& measure, const CaretMeasureData& caret) {
     g_activeContext = self;
     g_activeFont = &font;
     ensureFlushHook(self);
-    if (g_drawTextOriginal) g_drawTextOriginal(self, font, rectangle, text, c, alignment, alpha, measure, caret);
+    if (g_drawTextOriginal) g_drawTextOriginal(self, font, rectangle, std::move(text), c, alignment, alpha, measure, caret);
 
     // A first-frame fallback is retained only if the live UI implementation
     // could not be hooked. Once flushImages is observed, it owns dispatch.
